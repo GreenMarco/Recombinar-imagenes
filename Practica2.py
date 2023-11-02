@@ -1,5 +1,6 @@
 #%%
 #Importaciones
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -111,24 +112,20 @@ ImgB = cv2.imread('B.bmp')
 
 pA, pB = Extraer_Puntos(ImgA, ImgB)
 
-
 #%%
 #Parametros
 M = len(pB)
 l = 0.1 # <--- REGULACIÓN
 
-G = 100
+G = 300
 N = 30
 
 F = 0.5
 CR = 0.7
 
-xl = np.array([-8,-8,-8,
-               -6,-6,-6,
-               -4,-4,-4])
-xu = np.array([9,9,9,
-               5,5,5,
-               3,3,3])
+xl = np.array([-1,-1,-1,-1,-1,-1,-1,-1,-1])
+xu = np.array([1,1,1,1,1,1,1,1,1])
+
 D = len(xl)
 
 x = np.zeros((D, N))
@@ -144,7 +141,7 @@ for i in range(N):
     ppB = Transformar_Puntos(pB,T)                           # <------ Completar argumentos
     e = Calcular_Errores(pA, ppB)                               # <------ Completar argumentos
 
-    fitness[i] = l * (1/D) * np.sum(x[:,i] ** 2) + np.sqrt((1/M)*np.sum(e[i]**2)) #+  COMPLETAR     # <------ Completar fitness
+    fitness[i] = l * (1/D) * np.sum(x[:,i] ** 2) + np.sqrt(1/M*np.sum(e[i]**2)) #+  COMPLETAR     # <------ Completar fitness
 
 for n in range(G):
     for i in range(N):
@@ -157,38 +154,12 @@ for n in range(G):
 
         ## ----------- COMPLETAR AQUI ------------------------------------------##
         
-        #r1 = i
-        #while r1 == i:
-        #    r1 = np.random.randint(N)
-
-        #r2 = r1
-        #while r2 == r1 or r2 == i:
-        #    r2 = np.random.randint(N)
-
-        #best = np.argmin(fitness)
-
-        #v = x[:, best] + F * (x[:, r1] - x[:, r2])
-
-
         r1, r2, r3 = I[:3]
         #v = x[:, r1] + F * (x[:, r2] - x[:, r3])
         #v = x[:, i] + F * (x[:, r1] - x[:, i]) + F * (x[:, r2] - x[:, r3])
         best = np.argmin(fitness)
 
         v = x[:, best] + F * (x[:, r1] - x[:, r2])
-
-
-        #Recombinación
-        u = np.zeros(D)
-        k = np.random.randint(D)
-
-        for j in range(D):
-            r = np.random.rand()
-
-            if r <= CR or j == k:
-                u[j] = v[j]
-            else:
-                u[j] = x[j, i]
 
         ## ---------------------------------------------------------------------##
 
@@ -221,7 +192,3 @@ print(T)
 panorama = Crear_Figura_Panoramica(ImgA, ImgB, T)
 
 plt.plot(fx_plot)
-     
-
-
-# %%
