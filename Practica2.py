@@ -118,7 +118,7 @@ M = len(pB)
 l = 0.1 # <--- REGULACIÓN
 
 G = 450
-N = 80
+N = 78
 
 F = 0.6
 CR = 2.1
