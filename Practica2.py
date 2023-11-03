@@ -117,11 +117,11 @@ pA, pB = Extraer_Puntos(ImgA, ImgB)
 M = len(pB)
 l = 0.1 # <--- REGULACIÓN
 
-G = 300
-N = 30
+G = 400
+N = 75
 
-F = 0.5
-CR = 0.7
+F = 0.6
+CR = 2.1
 
 xl = np.array([-1,-1,-1,-1,-1,-1,-1,-1,-1])
 xu = np.array([1,1,1,1,1,1,1,1,1])
@@ -137,11 +137,11 @@ fx_plot = np.zeros(G)
 for i in range(N):
     x[:, i] = xl + (xu - xl) * np.random.rand(D)
 
-    T = Construir_Matriz_Transformacion(x[:, i])                # <------ Completar argumentos
+    T = Construir_Matriz_Transformacion(x[:,i])                # <------ Completar argumentos
     ppB = Transformar_Puntos(pB,T)                           # <------ Completar argumentos
-    e = Calcular_Errores(pA, ppB)                               # <------ Completar argumentos
+    e = Calcular_Errores(pA,ppB)                               # <------ Completar argumentos
 
-    fitness[i] = l * (1/D) * np.sum(x[:,i] ** 2) + np.sqrt(1/M*np.sum(e[i]**2)) #+  COMPLETAR     # <------ Completar fitness
+    fitness[i] = l * (1/D) * np.sum(x[:,i] ** 2) +  np.sum(e)     # <------ Completar fitness
 
 for n in range(G):
     for i in range(N):
@@ -153,13 +153,8 @@ for n in range(G):
         I = np.delete(I, [np.where(I == i)[0][0]]) # Esta linea elimina el elemento i que estemos analizando en esta iteración
 
         ## ----------- COMPLETAR AQUI ------------------------------------------##
-        
-        r1, r2, r3 = I[:3]
-        #v = x[:, r1] + F * (x[:, r2] - x[:, r3])
-        #v = x[:, i] + F * (x[:, r1] - x[:, i]) + F * (x[:, r2] - x[:, r3])
-        best = np.argmin(fitness)
-
-        v = x[:, best] + F * (x[:, r1] - x[:, r2])
+        r1, r2, r3 = I[:3]  # Seleccionar índices aleatorios diferentes
+        v = x[:,r1] + F * (x[:,r2]-x[:,r3])
 
         ## ---------------------------------------------------------------------##
 
@@ -174,11 +169,11 @@ for n in range(G):
                 u[j] = x[j, i].copy()
 
         # Selección
-        T = Construir_Matriz_Transformacion(x[:, i])        # <------ Completar argumentos
+        T = Construir_Matriz_Transformacion(u)        # <------ Completar argumentos
         ppB = Transformar_Puntos(pB,T)                   # <------ Completar argumentos
-        e = Calcular_Errores(pA, ppB)                       # <------ Completar argumentos
+        e = Calcular_Errores(pA,ppB)                       # <------ Completar argumentos
 
-        fitness_u = l * (1/D) * np.sum(u ** 2) + np.sqrt((1/M)*np.sum(e[i]**2)) #+  COMPLETAR   # <------ Completar fitness
+        fitness_u = l * (1/D) * np.sum(u ** 2) +  np.sum(e)   # <------ Completar fitness
 
         if fitness_u < fitness[i]:
             x[:, i] = u
@@ -191,4 +186,5 @@ T = Construir_Matriz_Transformacion(x[:, igb])
 print(T)
 panorama = Crear_Figura_Panoramica(ImgA, ImgB, T)
 
+plt.plot(fx_plot)
 plt.plot(fx_plot)
