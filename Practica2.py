@@ -107,8 +107,8 @@ def Transformar_Puntos(p, T):
 
 #%%
 #Algoritmo
-ImgA = cv2.imread('A.bmp')
-ImgB = cv2.imread('B.bmp')
+ImgA = cv2.imread('A2.bmp')
+ImgB = cv2.imread('B2.bmp')
 
 pA, pB = Extraer_Puntos(ImgA, ImgB)
 
@@ -117,8 +117,8 @@ pA, pB = Extraer_Puntos(ImgA, ImgB)
 M = len(pB)
 l = 0.1 # <--- REGULACIÓN
 
-G = 400
-N = 75
+G = 450
+N = 80
 
 F = 0.6
 CR = 2.1
